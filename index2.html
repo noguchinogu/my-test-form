@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;フォーム③&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; background: #f9f9f9; text-align: center; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>textarea { width: 100%; height: 150px; font-size: 16px; margin: 10px 0; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>button { padding: 12px 30px; background: #1a73e8; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.loading-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:1000; padding-top:200px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="loading" class="loading-overlay"&gt;&lt;h2&gt;データを送信中...&lt;/h2&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="setup" class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;(26)既存添削者フォーム③&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;(26)既存添削者フォーム①②に答えた情報を入力してください&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="email" placeholder="メールアドレス" style="width:90%; padding:10px; margin-bottom:10px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="id" placeholder="ID下6桁" style="width:90%; padding:10px; margin-bottom:10px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="name" placeholder="氏名" style="width:90%; padding:10px; margin-bottom:20px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="start()"&gt;認証して開始（記述回答）&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="test" style="display:none;" class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h3 id="sec-title"&gt;セクション1&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;textarea id="answer-box" placeholder="こちらに回答を記述してください..."&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button id="next-btn" onclick="next()"&gt;次へ進む&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="res" style="display:none;" class="card"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ★ここにGASのデプロイURL（execで終わるもの）を貼り付けてください</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const GAS_URL = "https://script.google.com/macros/s/AKfycbyDi8wbW51pJKVon4Alro-BljPun7lfcT8gdQ7fQI_3W7Ol8kgD2UNv2qEYhaNLJv2V9A/exec";<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>let cur = 1, myRow, userInfo;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// GASにデータを送る共通関数</p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function callGas(data) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const response = await fetch(GAS_URL, {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>method: "POST",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body: JSON.stringify(data)</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function start() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>userInfo = {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>email: document.getElementById('email').value.trim(),<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>id: document.getElementById('id').value.trim(),<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>name: document.getElementById('name').value.trim()<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!userInfo.email || !userInfo.id) return alert("メアドとIDを入力してください");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('loading').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// フォーム③として認証（内部でフォーム②の履歴と照合されます）</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const res = await callGas({ action: "register", userData: userInfo, formNum: 2 });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('loading').style.display = 'none';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(!res.success) return alert(res.message);</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>myRow = res.row;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('setup').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('test').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('loading').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>alert("サーバー通信エラーが発生しました。URLが正しいか、GASが「全員」に公開されているか確認してください。");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function next() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const text = document.getElementById('answer-box').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!text) return alert("回答を入力してください");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('loading').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>await callGas({<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>action: "saveText",<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>row: myRow,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>sectionNum: cur,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>text: text,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>formNum: 2<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('loading').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('answer-box').value = ""; // 入力欄をクリア</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(cur &lt; 5) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>cur++;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById('sec-title').innerText = "セクション" + cur;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if(cur === 5) document.getElementById('next-btn').innerText = "最終送信して採点";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>finish();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('loading').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>alert("送信に失敗しました。再度お試しください。");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function finish() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('test').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('loading').innerHTML = "&lt;h2&gt;AI採点中...&lt;br&gt;少々お待ちください&lt;/h2&gt;";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('loading').style.display = 'block';</p>
+<p class="p2"><span class="Apple-converted-space">      </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const score = await callGas({ action: "grade", row: myRow, formNum: 2 });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('loading').style.display = 'none';</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>let h = `&lt;h2&gt;採点結果: ${score}点&lt;/h2&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (score &gt;= 30) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>h += `&lt;div style="color:green; font-weight:bold;"&gt;【合格】&lt;/div&gt;&lt;p&gt;おめでとうございます。次は&lt;b&gt;(26)既存添削者フォーム④&lt;/b&gt;にお答えください。&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>h += `&lt;div style="color:red; font-weight:bold;"&gt;【不合格】&lt;/div&gt;&lt;p&gt;合格点は30点以上です。各セクションに10個の誤りがあります。&lt;br&gt;再度このページを読み込み直して、最初から挑戦してください。&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('res').innerHTML = h;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('res').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('loading').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>alert("採点処理でエラーが発生しました。スプレッドシートを確認してください。");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
