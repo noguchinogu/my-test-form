@@ -30,7 +30,7 @@
 <div class="container">
   <div id="auth-view">
     <h2>(26)研修フォーム②の2</h2>
-    <p>基本情報と同じ内容を入力してください。<br>※このフォームに時間制限はありません。辞書等を調べながら解答できます。</p>
+    <p>基本情報と同じ内容を入力してください。<br>※このフォームに時間制限はありません。教材を調べながら解答して構いません。</p>
     <input type="text" id="email" placeholder="メールアドレス">
     <input type="text" id="id" placeholder="ID（数字6桁）">
     <input type="text" id="name" placeholder="氏名">
@@ -45,7 +45,7 @@
     <h3 id="section-title">セクション 1 / 5</h3>
     <img id="question-image" src="" alt="問題画像">
 
-    <textarea id="answer-text" placeholder="画像を見て誤りを指摘してください（最大500文字まで入力可能）" maxlength="500"></textarea>
+    <textarea id="answer-text" placeholder="画像を見て誤りを指摘してください" maxlength="500"></textarea>
     
     <div class="nav-buttons">
       <button id="btn-prev" class="nav-btn secondary" onclick="goPrev()" style="display:none;">◀ 前へ</button>
@@ -186,7 +186,7 @@
       document.getElementById('result-details').innerHTML = detailsHtml;
 
       let msg = score >= user.passScore 
-        ? `<b>【合格】</b>おめでとうございます。<br>合格基準（${user.passScore}点）をクリアしました。次は「フォーム④」に進んでください。` 
+        ? `<b>【合格】</b>おめでとうございます。<br>合格基準（${user.passScore}点）をクリアしました。。` 
         : `<b>【不合格】</b>残念ですが合格基準（${user.passScore}点）に達しませんでした。<br>6時間経過後に再度受験してください。`;
       
       document.getElementById('result-message').innerHTML = msg;
