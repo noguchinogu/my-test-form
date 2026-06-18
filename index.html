@@ -45,7 +45,7 @@
     <h3 id="section-title">セクション 1 / 5</h3>
     <img id="question-image" src="" alt="問題画像">
 
-    <textarea id="answer-text" placeholder="画像を見て誤りを指摘してください"></textarea>
+    <textarea id="answer-text" placeholder="画像を見て誤りを指摘してください（最大500文字まで入力可能）" maxlength="500"></textarea>
     
     <div class="nav-buttons">
       <button id="btn-prev" class="nav-btn secondary" onclick="goPrev()" style="display:none;">◀ 前へ</button>
@@ -68,8 +68,8 @@
 </div>
 
 <script>
-  // ★GASのURLを貼り付けてください
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbzRfwC_mx8eN0KuOKdrK5yKcu4HM6jE8BMkxVHDRKO6htW82Wl8NfXF0ZzHuSJ-6uA6/exec"; 
+  // ★新しいGASのURLを貼り付けてください
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbxUMVHmsIj8Tn44RO7vyZmtkjoBIlGBx0DzDG3rY4w0sBO338DjfeghgtN7twb-CV9-/exec"; 
 
   let sectionImages = [];
   let user = {};
@@ -106,7 +106,7 @@
       
       if (res.success) {
         sectionImages = res.images || [];
-        user.passScore = 30; // 合格ライン
+        user.passScore = 30; 
 
         isTesting = true; 
         document.getElementById('auth-view').style.display = 'none';
@@ -114,7 +114,8 @@
         
         renderSection();
       } else {
-        alert(res.message || "登録情報と一致しません。");
+        // ★GAS側から返ってきた具体的な理由を表示。空なら包括的なエラーを表示
+        alert(res.message || "登録情報と一致しないか、または現在の受験資格がありません。");
         document.getElementById('auth-status').style.display = 'none';
       }
     } catch (e) {
