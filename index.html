@@ -1,130 +1,202 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.3">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>(26)研修フォーム②の2 - テキスト入力版</title>
+  <style>
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; text-align: center; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    h2 { color: #1a73e8; margin-bottom: 20px; }
+    input[type="text"] { width: 90%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
+    textarea { width: 90%; height: 180px; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; box-sizing: border-box; resize: vertical; }
+    
+    .nav-buttons { display: flex; justify-content: space-between; width: 90%; margin: 0 auto; gap: 10px; margin-top: 10px; }
+    button.nav-btn { flex: 1; padding: 15px; background: #1a73e8; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    button.nav-btn:hover { background: #1557b0; }
+    button.nav-btn.secondary { background: #757575; }
+    button.nav-btn.secondary:hover { background: #616161; }
+
+    #question-image { max-width: 90%; height: auto; max-height: 400px; object-fit: contain; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto; }
+    .loader { display: inline-block; width: 30px; height: 30px; border: 4px solid #f3f3f3; border-top: 4px solid #1a73e8; border-radius: 50%; animation: spin 1s linear infinite; margin-top: 10px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    .result-details { text-align: left; background: #f8f9fa; border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; font-size: 15px; }
+    .result-details hr { border: none; border-top: 1px dashed #ccc; margin: 15px 0; }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;フォーム② (音声回答)&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; background: #f9f9f9; text-align: center; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.timer { font-size: 32px; font-weight: bold; color: #e74c3c; margin-bottom: 20px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button { padding: 15px 30px; background: #1a73e8; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 18px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>input { width: 90%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#bar-container { width: 100%; height: 10px; background: #eee; border-radius: 5px; margin: 20px 0; display:none; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#bar { width: 0%; height: 100%; background: #ff5252; transition: 0.1s; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="setup" class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;(26)既存添削者フォーム②&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="email" placeholder="メールアドレス"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="id" placeholder="ID下6桁"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="name" placeholder="氏名"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="start()"&gt;認証して録音開始&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="test" style="display:none;" class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="timer" id="time"&gt;02:30&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="bar-container"&gt;&lt;div id="bar"&gt;&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h3 id="sec-title"&gt;セクション1&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="next()"&gt;回答を終了して次へ&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="loading" style="display:none;"&gt;&lt;h2&gt;処理中...&lt;/h2&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const GAS_URL = "https://script.google.com/macros/s/AKfycbydt0_nd8D-7Nnc7yOu5KD-wB-z6tAVE1OD0AkKfmCr3vozehvtWJ8YshV7q2xKriTYWA/exec";<span class="Apple-converted-space"> </span></p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>let cur = 1, timer, myRow, userInfo, recorder, chunks = [], stream;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>async function callGas(data) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const response = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(data) });</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return await response.json();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>async function start() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>userInfo = { email: document.getElementById('email').value.trim(), id: document.getElementById('id').value.trim(), name: document.getElementById('name').value.trim() };</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!userInfo.email || !userInfo.id) return alert("入力してください");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>stream = await navigator.mediaDevices.getUserMedia({ audio: true });</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const res = await callGas({ action: "register", userData: userInfo, formNum: 1 });</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(!res.success) return alert(res.message);</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>myRow = res.row;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('setup').style.display='none';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('test').style.display='block';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('bar-container').style.display='block';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setupRecorder();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} catch (e) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>alert("マイクを許可してください。");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function setupRecorder() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>recorder = new MediaRecorder(stream);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>recorder.ondataavailable = e =&gt; chunks.push(e.data);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const ctx = new AudioContext();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const ana = ctx.createAnalyser();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>ctx.createMediaStreamSource(stream).connect(ana);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const data = new Uint8Array(ana.frequencyBinCount);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const upd = () =&gt; { ana.getByteFrequencyData(data); document.getElementById('bar').style.width = (data.reduce((a,b)=&gt;a+b)/data.length)*2.5+"%"; requestAnimationFrame(upd); };</p>
-<p class="p1"><span class="Apple-converted-space">      </span>upd();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>runTimer();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function runTimer() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>chunks = []; recorder.start();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>let left = 150;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>clearInterval(timer);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>timer = setInterval(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('time').innerText = Math.floor(left/60)+":"+(left%60).toString().padStart(2,'0');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(left-- &lt;= 0) { clearInterval(timer); next(true); }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}, 1000);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>async function next(auto=false) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!auto &amp;&amp; !confirm("次へ進みますか？")) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('loading').style.display = 'block';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>recorder.stop();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>recorder.onstop = async () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const reader = new FileReader();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>reader.readAsDataURL(new Blob(chunks, {type:'audio/webm'}));</p>
-<p class="p1"><span class="Apple-converted-space">        </span>reader.onloadend = async () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>await callGas({ action: "saveAudio", row: myRow, sectionNum: cur, audioBase64: reader.result, userInfo: userInfo, formNum: 1 });</p>
-<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById('loading').style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if(cur &lt; 5) { cur++; document.getElementById('sec-title').innerText = "セクション" + cur; runTimer(); }<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">          </span>else { finish(); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p1"><span class="Apple-converted-space">      </span>};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>async function finish() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>stream.getTracks().forEach(t =&gt; t.stop());</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('test').style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('loading').innerHTML = "&lt;h2&gt;AI採点中...&lt;/h2&gt;";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('loading').style.display = 'block';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const score = await callGas({ action: "grade", row: myRow, formNum: 1 });</p>
-<p class="p1"><span class="Apple-converted-space">      </span>let h = `&lt;h2&gt;点数: ${score}点&lt;/h2&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>h += (score &gt;= 30) ? "合格です！次はフォーム④へ" : "不合格。次はフォーム③へ";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('loading').innerHTML = h;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<div class="container">
+  <div id="auth-view">
+    <h2>(26)研修フォーム②の2</h2>
+    <p>基本情報と同じ内容を入力してください。<br>※このフォームに時間制限はありません。辞書等を調べながら解答できます。</p>
+    <input type="text" id="email" placeholder="メールアドレス">
+    <input type="text" id="id" placeholder="ID（数字6桁）">
+    <input type="text" id="name" placeholder="氏名">
+    <br><br>
+    <button class="nav-btn" onclick="startAuth()" style="width:90%">認証してスタート</button>
+    <div id="auth-status" style="display:none; font-weight:bold; margin-top:15px; color:#555;">
+      <div class="loader"></div><br><span>ユーザー認証中...</span>
+    </div>
+  </div>
+
+  <div id="test-view" style="display:none;">
+    <h3 id="section-title">セクション 1 / 5</h3>
+    <img id="question-image" src="" alt="問題画像">
+
+    <textarea id="answer-text" placeholder="画像を見て誤りを指摘してください"></textarea>
+    
+    <div class="nav-buttons">
+      <button id="btn-prev" class="nav-btn secondary" onclick="goPrev()" style="display:none;">◀ 前へ</button>
+      <button id="btn-next" class="nav-btn" onclick="goNext()">次へ ▶</button>
+      <button id="btn-submit" class="nav-btn" onclick="confirmSubmit()" style="background:#4caf50; display:none;">回答終了（採点へ）</button>
+    </div>
+  </div>
+
+  <div id="loading-view" style="display:none;">
+    <h2>処理中...</h2>
+    <div class="loader"></div>
+    <p style="font-weight:bold; color:#555;">回答を送信中... AIが採点しています<br>※画面を閉じずにお待ちください。</p>
+  </div>
+
+  <div id="result-view" style="display:none;">
+    <h2 id="result-title">採点完了</h2>
+    <div id="result-details" class="result-details"></div>
+    <p id="result-message" style="font-weight:bold; font-size:18px; color:#555;"></p>
+  </div>
+</div>
+
+<script>
+  // ★GASのURLを貼り付けてください
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbzQ-nbUSslME1fdxUHyWKl6PhsrccCXaLPZLsVU_qqcvWRF6GcB-w27Cmram-14qss/exec"; 
+
+  let sectionImages = [];
+  let user = {};
+  let cur = 1;
+  let answers = ["", "", "", "", ""]; 
+  let isTesting = false; 
+
+  window.addEventListener('beforeunload', function (e) {
+    if (isTesting) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  async function callGas(data) {
+    try {
+      const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(data) });
+      if (!res.ok) throw new Error("サーバーからエラーが返されました (Status: " + res.status + ")");
+      return await res.json();
+    } catch(e) {
+      throw new Error("GASとの通信に失敗しました。URLが正しいか確認してください。: " + e.message);
+    }
+  }
+
+  async function startAuth() {
+    user = { 
+      email: document.getElementById('email').value.trim(), 
+      id: document.getElementById('id').value.trim(), 
+      name: document.getElementById('name').value.trim() 
+    };
+    if (!user.email || !user.id || !user.name) return alert("すべての項目を入力してください。");
+
+    document.getElementById('auth-status').style.display = 'block';
+
+    try {
+      const res = await callGas({ action: "auth", user: user });
+      
+      if (res.success) {
+        sectionImages = res.images || [];
+        user.passScore = 30; // 合格ライン
+
+        isTesting = true; 
+        document.getElementById('auth-view').style.display = 'none';
+        document.getElementById('test-view').style.display = 'block';
+        
+        renderSection();
+      } else {
+        alert(res.message || "登録情報と一致しません。");
+        document.getElementById('auth-status').style.display = 'none';
+      }
+    } catch (e) {
+      alert(e.message || "予期せぬエラーが発生しました。");
+      document.getElementById('auth-status').style.display = 'none';
+    }
+  }
+
+  function renderSection() {
+    document.getElementById('section-title').innerText = `セクション ${cur} / 5`;
+    if(sectionImages[cur - 1]) document.getElementById('question-image').src = sectionImages[cur - 1];
+    
+    document.getElementById('answer-text').value = answers[cur - 1]; 
+
+    document.getElementById('btn-prev').style.display = (cur > 1) ? 'inline-block' : 'none';
+    document.getElementById('btn-next').style.display = (cur < 5) ? 'inline-block' : 'none';
+    document.getElementById('btn-submit').style.display = (cur === 5) ? 'inline-block' : 'none';
+  }
+
+  function goNext() {
+    answers[cur - 1] = document.getElementById('answer-text').value; 
+    if (cur < 5) { cur++; renderSection(); }
+  }
+
+  function goPrev() {
+    answers[cur - 1] = document.getElementById('answer-text').value; 
+    if (cur > 1) { cur--; renderSection(); }
+  }
+
+  function confirmSubmit() {
+    answers[cur - 1] = document.getElementById('answer-text').value; 
+    finishTest();
+  }
+
+  async function finishTest() {
+    document.getElementById('test-view').style.display = 'none';
+    document.getElementById('loading-view').style.display = 'block';
+    
+    try {
+      const res = await callGas({ action: "submit", user: user, answers: answers }); 
+      
+      isTesting = false; 
+      document.getElementById('loading-view').style.display = 'none';
+      document.getElementById('result-view').style.display = 'block';
+      
+      if (res.isApiError) {
+        document.getElementById('result-title').innerText = "エラー";
+        document.getElementById('result-details').style.display = "none";
+        document.getElementById('result-message').innerHTML = "<span style='color:#e53935;'>採点時にエラーが発生しました。<br>所定のフォームから再度お問い合わせください。</span>";
+        return;
+      }
+
+      let score = res.score || 0;
+      let scores = res.scores || [0,0,0,0,0];
+      
+      document.getElementById('result-title').innerText = `合計得点: ${score} 点 / 60 点`;
+
+      let detailsHtml = `
+        <b>【配点情報】</b><br>
+        ・1セクションにつき12点満点<br>
+        ・合計60点満点<br>
+        <hr>
+        <b>【セクション別得点】</b><br>
+      `;
+      for(let i = 0; i < 5; i++) {
+        detailsHtml += `セクション ${i+1} : ${scores[i]} 点<br>`;
+      }
+      document.getElementById('result-details').innerHTML = detailsHtml;
+
+      let msg = score >= user.passScore 
+        ? `<b>【合格】</b>おめでとうございます。<br>合格基準（${user.passScore}点）をクリアしました。次は「フォーム④」に進んでください。` 
+        : `<b>【不合格】</b>残念ですが合格基準（${user.passScore}点）に達しませんでした。<br>6時間経過後に再度受験してください。`;
+      
+      document.getElementById('result-message').innerHTML = msg;
+
+    } catch(e) {
+      alert("採点データの送信中にエラーが発生しました: " + e.message);
+      document.getElementById('loading-view').style.display = 'none';
+      document.getElementById('auth-view').style.display = 'block';
+    }
+  }
+</script>
+
 </body>
 </html>
