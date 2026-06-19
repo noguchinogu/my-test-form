@@ -75,7 +75,7 @@
 
 <script>
   // ★あなたの新しいGASのURLをここに貼り付けてください
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbyD124MTsilXOnRNHdmQcsItW0W2hO7qI8QInL7h2thwem-7_dgJANKhIOqvwDk-lu7/exec"; 
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbwDDWinMn780mgVP8hRw78ZaUZoM8Rug0LXwDQtRo56Jyct7LTfEIfrFYL__i80lp-K/exec"; 
 
   let sectionImages = [];
   let user = {};
@@ -87,9 +87,9 @@
   const hints = [
     "【このセクションの誤り】<br>誤字脱字5個、日本語文法の誤り2個、日本語語法の誤り1個、歴史的事実の誤り4個",
     "【このセクションの誤り】<br>誤字脱字8個、日本語文法の誤り1個、歴史的事実の誤り3個",
-    "【このセクションの誤り】<br>誤字脱字8個、日本語文法の誤り1個、日本語語法の誤り1個、歴史的事実の誤り2個",
-    "【このセクションの誤り】<br>誤字脱字6個、日本語文法の誤り2個、日本語語法の誤り2個、歴史的事実の誤り2個",
-    "【このセクションの誤り】<br>誤字脱字5個、日本語文法の誤り2個、日本語語法の誤り3個、歴史的事実の誤り2個"
+    "【このセクションの誤り】<br>誤字8個、日本語文法の誤り1個、日本語語法の誤り1個、歴史的事実の誤り2個",
+    "【このセクションの誤り】<br>誤字6個、日本語文法の誤り2個、日本語語法の誤り2個、歴史的事実の誤り2個",
+    "【このセクションの誤り】<br>誤字5個、日本語文法の誤り2個、日本語語法の誤り3個、歴史的事実の誤り2個"
   ];
 
   window.addEventListener('beforeunload', function (e) {
@@ -121,7 +121,7 @@
       
       if (res.success) {
         sectionImages = res.images || [];
-        user.passScore = 27; 
+        user.passScore = 28; 
 
         isTesting = true; 
         document.getElementById('auth-view').style.display = 'none';
