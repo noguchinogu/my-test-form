@@ -21,8 +21,10 @@
     .loader { display: inline-block; width: 30px; height: 30px; border: 4px solid #f3f3f3; border-top: 4px solid #1a73e8; border-radius: 50%; animation: spin 1s linear infinite; margin-top: 10px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     
+    .section-hint { background: #e3f2fd; border: 1px solid #1e88e5; padding: 12px; border-radius: 6px; margin: 0 auto 15px auto; width: 85%; color: #1565c0; font-weight: bold; font-size: 15px; text-align: left; }
+    .general-info { font-size: 14px; font-weight: bold; color: #d32f2f; margin-bottom: 15px; }
+
     .result-details { text-align: left; background: #f8f9fa; border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; font-size: 15px; }
-    .result-details hr { border: none; border-top: 1px dashed #ccc; margin: 15px 0; }
   </style>
 </head>
 <body>
@@ -30,7 +32,7 @@
 <div class="container">
   <div id="auth-view">
     <h2>(26)研修フォーム②の2</h2>
-    <p>基本情報と同じ内容を入力してください。<br>※このフォームに時間制限はありません。教材を調べながら解答して構いません。</p>
+    <p>基本情報と同じ内容を入力してください。<br>※このフォームに時間制限はありません。辞書等を調べながら解答できます。</p>
     <input type="text" id="email" placeholder="メールアドレス">
     <input type="text" id="id" placeholder="ID（数字6桁）">
     <input type="text" id="name" placeholder="氏名">
@@ -43,9 +45,13 @@
 
   <div id="test-view" style="display:none;">
     <h3 id="section-title">セクション 1 / 5</h3>
+    
+    <div class="general-info">※各セクション12個誤りがあり、60点満点で、30点以上で合格</div>
+    <div id="section-hint" class="section-hint"></div>
+
     <img id="question-image" src="" alt="問題画像">
 
-    <textarea id="answer-text" placeholder="画像を見て誤りを指摘してください" maxlength="500"></textarea>
+    <textarea id="answer-text" placeholder="画像と上のヒントを見て、誤りを指摘してください（最大500文字）" maxlength="500"></textarea>
     
     <div class="nav-buttons">
       <button id="btn-prev" class="nav-btn secondary" onclick="goPrev()" style="display:none;">◀ 前へ</button>
@@ -68,14 +74,23 @@
 </div>
 
 <script>
-  // ★新しいGASのURLを貼り付けてください
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbyMMFnylRce2oPX_MJIWbjB-JpQNGfsqDP5NR4ifXBpDqYWv1TrcNu0_E145vwwxywF/exec"; 
+  // ★あなたの新しいGASのURLをここに貼り付けてください
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbyt1bZvCVsWq15muaLvEvb9OdYkro1f2NIU_O1tYmb6aDcSJA01EJDJgnEB75rgffiP/exec"; 
 
   let sectionImages = [];
   let user = {};
   let cur = 1;
   let answers = ["", "", "", "", ""]; 
   let isTesting = false; 
+
+  // 各セクションの誤り内訳
+  const hints = [
+    "【このセクションの誤り】<br>誤字脱字5個、日本語文法の誤り2個、日本語語法の誤り1個、歴史的事実の誤り4個",
+    "【このセクションの誤り】<br>誤字脱字8個、日本語文法の誤り1個、歴史的事実の誤り3個",
+    "【このセクションの誤り】<br>誤字脱字8個、日本語文法の誤り1個、日本語語法の誤り1個、歴史的事実の誤り2個",
+    "【このセクションの誤り】<br>誤字脱字6個、日本語文法の誤り2個、日本語語法の誤り2個、歴史的事実の誤り2個",
+    "【このセクションの誤り】<br>誤字脱字5個、日本語文法の誤り2個、日本語語法の誤り3個、歴史的事実の誤り2個"
+  ];
 
   window.addEventListener('beforeunload', function (e) {
     if (isTesting) { e.preventDefault(); e.returnValue = ''; }
@@ -106,7 +121,7 @@
       
       if (res.success) {
         sectionImages = res.images || [];
-        user.passScore = 30; 
+        user.passScore = 27; 
 
         isTesting = true; 
         document.getElementById('auth-view').style.display = 'none';
@@ -114,7 +129,6 @@
         
         renderSection();
       } else {
-        // ★GAS側から返ってきた具体的な理由を表示。空なら包括的なエラーを表示
         alert(res.message || "登録情報と一致しないか、または現在の受験資格がありません。");
         document.getElementById('auth-status').style.display = 'none';
       }
@@ -126,6 +140,8 @@
 
   function renderSection() {
     document.getElementById('section-title').innerText = `セクション ${cur} / 5`;
+    document.getElementById('section-hint').innerHTML = hints[cur - 1];
+    
     if(sectionImages[cur - 1]) document.getElementById('question-image').src = sectionImages[cur - 1];
     
     document.getElementById('answer-text').value = answers[cur - 1]; 
@@ -169,25 +185,20 @@
       }
 
       let score = res.score || 0;
-      let scores = res.scores || [0,0,0,0,0];
+      let isPassed = score >= user.passScore; // 27点以上で内部的には合格
       
-      document.getElementById('result-title').innerText = `合計得点: ${score} 点 / 60 点`;
-
-      let detailsHtml = `
+      document.getElementById('result-title').innerText = "採点完了";
+      
+      // 合格・不合格に関わらず、詳細な点数は見せず基準のみを表示
+      document.getElementById('result-details').innerHTML = `
         <b>【配点情報】</b><br>
-        ・1セクションにつき12個誤りがあり、12点満点<br>
-        ・合計60点満点<br>
-        <hr>
-        <b>【セクション別得点】</b><br>
+        ・1セクションにつき12個の誤り（合計60点満点）<br>
+        ・合格基準：30点以上<br>
       `;
-      for(let i = 0; i < 5; i++) {
-        detailsHtml += `セクション ${i+1} : ${scores[i]} 点<br>`;
-      }
-      document.getElementById('result-details').innerHTML = detailsHtml;
 
-      let msg = score >= user.passScore 
-        ? `<b>【合格】</b>おめでとうございます。<br>合格基準（${user.passScore}点）をクリアしました。。` 
-        : `<b>【不合格】</b>残念ですが合格基準（${user.passScore}点）に達しませんでした。<br>6時間経過後に再度受験してください。`;
+      let msg = isPassed 
+        ? `<b>【合格】</b>おめでとうございます。<br>合格基準をクリアしました。` 
+        : `<b>【不合格】</b>残念ながら合格基準に達しませんでした。<br>規定の時間を開けて再度受験してください。`;
       
       document.getElementById('result-message').innerHTML = msg;
 
