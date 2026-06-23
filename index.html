@@ -32,7 +32,7 @@
 <div class="container">
   <div id="auth-view">
     <h2>(26)研修フォーム②の2</h2>
-    <p>フォーム①と同じ情報を入力してください。<br>※このフォームに時間制限はありません。教材等を調べながら解答して構いません。</p>
+    <p>基本情報と同じ内容を入力してください。<br>※このフォームに時間制限はありません。辞書等を調べながら解答できます。</p>
     <input type="text" id="email" placeholder="メールアドレス">
     <input type="text" id="id" placeholder="ID（数字6桁）">
     <input type="text" id="name" placeholder="氏名">
@@ -46,12 +46,13 @@
   <div id="test-view" style="display:none;">
     <h3 id="section-title">セクション 1 / 5</h3>
     
-    <div class="general-info">※各セクション12個誤りがあり、60点満点で、30点以上で合格</div>
+    <div id="general-info" class="general-info">※各セクション12個誤りがあり、60点満点で、30点以上で合格</div>
+    
     <div id="section-hint" class="section-hint"></div>
 
     <img id="question-image" src="" alt="問題画像">
 
-    <textarea id="answer-text" placeholder="画像と上のヒントを見て、誤りを指摘してください" maxlength="500"></textarea>
+    <textarea id="answer-text" placeholder="画像と上のヒントを見て、誤りを指摘してください（最大500文字）" maxlength="500"></textarea>
     
     <div class="nav-buttons">
       <button id="btn-prev" class="nav-btn secondary" onclick="goPrev()" style="display:none;">◀ 前へ</button>
@@ -74,8 +75,8 @@
 </div>
 
 <script>
-  // ★あなたの新しいGASのURLをここに貼り付けてください
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbwDDWinMn780mgVP8hRw78ZaUZoM8Rug0LXwDQtRo56Jyct7LTfEIfrFYL__i80lp-K/exec"; 
+  // ★あなたの新しいGASのURL（フォーム②の2用）をここに貼り付けてください
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbzC0PudxU1NJqi0_iU3bCZ8HjzzS8QbJuL8_WoHVpS2pKcqS84Lkk4yWNCa-H6NeEMu/exec"; 
 
   let sectionImages = [];
   let user = {};
@@ -121,12 +122,21 @@
       
       if (res.success) {
         sectionImages = res.images || [];
+        
+        // ★2-2の真の合格ラインは28点
         user.passScore = 28; 
+        
+        // ★GASから受け取った2-1の点数を元に、画面表示用のフェイク合格点を決定
+        user.f1Score = res.f1Score || 0;
+        user.displayPassScore = (user.f1Score <= 29) ? 30 : 36;
 
         isTesting = true; 
         document.getElementById('auth-view').style.display = 'none';
         document.getElementById('test-view').style.display = 'block';
         
+        // ★画面上部の案内テキストを動的に書き換える
+        document.getElementById('general-info').innerText = `※各セクション12個誤りがあり、60点満点で、${user.displayPassScore}点以上で合格`;
+
         renderSection();
       } else {
         alert(res.message || "登録情報と一致しないか、または現在の受験資格がありません。");
@@ -185,19 +195,21 @@
       }
 
       let score = res.score || 0;
-      let isPassed = score >= user.passScore; // 27点以上で内部的には合格
+      
+      // ★28点以上で内部的には合格
+      let isPassed = score >= user.passScore; 
       
       document.getElementById('result-title').innerText = "採点完了";
       
-      // 合格・不合格に関わらず、詳細な点数は見せず基準のみを表示
+      // ★合格・不合格に関わらず、詳細な点数は見せずフェイクの基準のみを表示
       document.getElementById('result-details').innerHTML = `
         <b>【配点情報】</b><br>
         ・1セクションにつき12個の誤り（合計60点満点）<br>
-        ・合格基準：30点以上<br>
+        ・合格基準：${user.displayPassScore}点以上<br>
       `;
 
       let msg = isPassed 
-        ? `<b>【合格】</b>おめでとうございます。<br>実際の添削業務は誤りの数が事前に判明しておらず、<br>採点基準を見ながら加点しつつ指摘するのでより難易度が高いです。<br>慎重に答案を確認していただくようお願いします。` 
+        ? `<b>【合格】</b>合格です。<br>実際の添削業務は誤りの数が事前に判明しておらず、<br>採点基準を見ながら加点しつつ指摘するのでより難易度が高いです。<br>慎重に答案を確認していただくようお願いします。。` 
         : `<b>【不合格】</b>残念ながら合格基準に達しませんでした。<br>規定の時間を開けて再度受験してください。`;
       
       document.getElementById('result-message').innerHTML = msg;
