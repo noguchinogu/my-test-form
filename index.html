@@ -128,7 +128,7 @@
         
         // ★GASから受け取った2-1の点数を元に、画面表示用のフェイク合格点を決定
         user.f1Score = res.f1Score || 0;
-        user.displayPassScore = (user.f1Score <= 29) ? 30 : 36;
+        user.displayPassScore = (user.f1Score <= 26) ? 30 : 36;
 
         isTesting = true; 
         document.getElementById('auth-view').style.display = 'none';
